@@ -1,0 +1,72 @@
+<meta name="robots" content="noindex, nofollow">
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日本語単語検索ツール</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>日本語単語検索ツール</h1>
+
+        <div class="panel">
+            <h3>基本検索</h3>
+            <div class="search-panel">
+                <div class="input-group">
+                    <label>文字数:</label>
+                    <input type="number" id="wordLength" value="4" min="1">
+                </div>
+                <div class="input-group">
+                    <input type="number" id="charPos" value="3" min="1">
+                    <label>文字目が</label>
+                    <input type="text" id="targetChar" placeholder="さ" maxlength="1">
+                    <label>である単語</label>
+                </div>
+                <button onclick="executeSearch()">検索</button>
+            </div>
+        </div>
+
+        <div class="panel">
+            <h3>正規表現検索</h3>
+            <div class="search-panel">
+                <input type="text" id="regexInput" placeholder="例: ^..さ.$" style="flex: 1;">
+                <button onclick="executeRegexSearch()">正規表現で検索</button>
+            </div>
+            <div class="help-text">
+                <strong>正規表現の記号:</strong><br>
+                <code>.</code> (任意の1文字) /
+                <code>^</code> (先頭) /
+                <code>$</code> (末尾) /
+                <code>[あ-お]</code> (特定の範囲) /
+                <code>{n}</code> (n回繰り返し)<br>
+                <small>例: 4文字で3文字目が「さ」→ <code>^.{2}さ.$</code></small>
+            </div>
+        </div>
+
+        <div class="panel gemini-panel">
+            <h3>Gemini用プロンプト作成</h3>
+            <p><small>現在の検索結果リストを使って、Geminiへの指示を作成します。</small></p>
+            <div class="search-panel">
+                <input type="text" id="geminiInstruction" placeholder="例: この中から「花の名前」だけを抽出して" style="flex: 1;">
+                <button onclick="generateGeminiPrompt()" class="btn-ai">プロンプトを生成</button>
+            </div>
+            <textarea id="geminiOutput" readonly placeholder="ここにプロンプトが生成されます"></textarea>
+            <button onclick="copyPrompt()" id="copyBtn" style="display:none; margin-top: 10px;">プロンプトをコピーする</button>
+        </div>
+
+        <div class="status">
+            辞書データ: <span id="dataStatus">読み込み中...</span>
+            <span id="matchCount"></span>
+        </div>
+
+        <hr>
+
+        <div id="results" class="results-grid">
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
